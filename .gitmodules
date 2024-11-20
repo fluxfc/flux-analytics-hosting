@@ -1,0 +1,4 @@
+[submodule "analytics"]
+	path = analytics
+	url = https://github.com/fluxfc/flux-analytics.git
+	branch = production
