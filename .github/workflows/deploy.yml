@@ -1,0 +1,28 @@
+name: Deploy Plausible Analytics
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Hosting Repo
+      uses: actions/checkout@v3
+
+    - name: SSH to Server and Deploy
+      uses: appleboy/ssh-action@v0.1.0
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: root
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ~/hosting/analytics
+          git pull origin production
+          cd ..
+          docker-compose build
+          docker-compose down
+          docker-compose up -d
